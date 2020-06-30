@@ -30,7 +30,18 @@ clearBasketAll () {
 
 
 clearBasketMultiples () {
-   echo "test"
+   echo "$@"
+   while [ $# -gt 0 ]; do
+      location="${basketLocation}/"$1""
+      echo "$location"
+      if [ -d "$location" ]; then
+         printf "\n Are you sure you want to delete the directory?\n\n"
+         rm -rf -I "$location"
+      else
+         rm -i "$location"
+      fi
+      shift
+   done
 }
 
 
