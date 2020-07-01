@@ -30,11 +30,11 @@ clearBasketAll () {
 
 
 clearBasketMultiples () {
-   echo "deleting : "$@""
    if [ ! -d "$basketLocation" ]; then
       createBasket
    else
       while [ $# -gt 0 ]; do
+         echo "Removing the File: "$1""
          location="${basketLocation}/"$1""
          if [ -d "$location" ]; then            
             printf "\nAre you sure you want to delete the directory?\n"

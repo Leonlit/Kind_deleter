@@ -18,7 +18,6 @@ if [ $# -gt 0  ]; then
    shift  #so that we can use the other arguments as file (assumes)
    if [ $command = "-i" ]; then
       if [ $# -gt 0 ]; then
-         printf "Deleting files : $@\n"
          deleteFiles "$@"
       else 
          echo "Error, -i need at least one arguments after it"

@@ -1,7 +1,8 @@
 #file for moving files into the basket
 
 deleteFiles() {
-   while [ $# -eq 1 ]; do
+   while [ $# -gt 0 ]; do
+      echo "deleting file "$1""      
       tempName="${basketLocation}/"$1""
       counter=0
       
