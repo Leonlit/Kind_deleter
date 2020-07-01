@@ -1,49 +1,55 @@
 #file for clearing the folder content
 
 clearBasketAll () {
-   printf "Do you wish to clear myWasteBasket content? \n\n"
-   ls -A "$basketLocation"
-   select yn in "Yes" "No"; do
-      case $yn in
-         Yes ) 
-            if [ -d "$basketLocation" ]; then
-               # Control will enter here if $DIRECTORY exists.
-               if [ "$(ls -A $basketLocation)" ]; then
-                  echo "$basketLocation"
-                  rm -rfv "$basketLocation"/* 
-               else 
-                  echo "myWasteBasket is empty, exiting operation!!!"
-               fi
-            else 
-               echo "The folder "$basketLocation" doesn't exist!"
-               echo "Exiting operation!!!"
-               exit 1
-            fi
-            break; ;;
+    if [ -d "$basketLocation" ]; then
+       printf "Do you wish to clear myWasteBasket content? \n\n"
+       ls -A "$basketLocation"
+       
+       select yn in "Yes" "No"; do
+          case $yn in
+               Yes ) 
+                  # Control will enter here if $DIRECTORY exists.
+                  if [ "$(ls -A $basketLocation)" ]; then
+                     echo "$basketLocation"
+                     rm -rfv "$basketLocation"/* 
+                  else 
+                     echo "myWasteBasket is empty, exiting operation!!!"
+                  fi
+               break; ;;
          
-         No )
-            echo "Aborting operation"
-            exit;;
-      esac
-   done
+               No )
+                  echo "Aborting operation"
+                  exit;;
+            esac
+         done
+      else
+         echo "myBasket directory in "$basketLocation" not found!"
+         createBasket
+   fi
 }
 
 
 clearBasketMultiples () {
-   echo "$@"
-   while [ $# -gt 0 ]; do
-      location="${basketLocation}/"$1""
-      echo "$location"
-      if [ -d "$location" ]; then
-         printf "\n Are you sure you want to delete the directory?\n\n"
-         rm -rf -I "$location"
-      else
-         rm -i "$location"
-      fi
-      shift
-   done
+   echo "deleting : "$@""
+   if [ ! -d "$basketLocation" ]; then
+      createBasket
+   else
+      while [ $# -gt 0 ]; do
+         location="${basketLocation}/"$1""
+         if [ -d "$location" ]; then            
+            printf "\nAre you sure you want to delete the directory?\n"
+            rm -rf -I "$location"
+         else
+            printf "\n"
+            rm -i "$location"
+         fi
+         shift
+      done
+   fi
 }
 
+createBasket () {
+   echo "Creating myWasteBasket in desktop!!!"
+   mkdir "$basketLocation"
 
-
-
+}

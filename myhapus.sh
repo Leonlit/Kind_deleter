@@ -8,16 +8,22 @@
 
 #importing important files
 . ./clearBasket.sh
+. ./deleteFiles.sh
 
 basketLocation="/home/kali/Desktop/myWasteBasket"
 
 command="$1"
-shift #so that we can use the other arguments as file (assumes)
 
 if [ $# -gt 0  ]; then   
-  
+   shift  #so that we can use the other arguments as file (assumes)
    if [ $command = "-i" ]; then
-      printf "So you want to move away this file \n"
+      if [ $# -gt 0 ]; then
+         printf "Deleting files : $@\n"
+         deleteFiles "$@"
+      else 
+         echo "Error, -i need at least one arguments after it"
+         exit 1
+      fi
    
    elif [ $command =  "-c"  ]; then
       
@@ -38,7 +44,7 @@ if [ $# -gt 0  ]; then
       clearBasketMultiples "$@"
 
       else
-         printf "Invalid argument[s] usage, user will need to include files name to be deleted!!!"
+         printf "Invalid argument[s] usage, user will need to include files name to be deleted!!!\n\n"
          exit 127
       fi
 
@@ -48,6 +54,11 @@ if [ $# -gt 0  ]; then
    fi
 
 else
-   printf "Error, at least 1 (one) arguments are needed!!!\n\n"
-     exit 127
+   printf "Error, at least 1 (one) arguments are needed!!!\n"
+   printf "Available Commands are :\n\n"
+   echo "-i , delete certain file(s)"
+   echo "-c , clearing the myWasteBasket"
+   echo "-ic or -ci, clearing certain file(S) in myWasteBsket"
+   echo 
+   exit 127
 fi
