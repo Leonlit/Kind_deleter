@@ -12,9 +12,10 @@
 
 basketLocation="/home/kali/Desktop/myWasteBasket"
 
-command="$1"
+
 
 if [ $# -gt 0  ]; then   
+   command="$1"
    shift  #so that we can use the other arguments as file (assumes)
    if [ $command = "-i" ]; then
       if [ $# -gt 0 ]; then

@@ -10,7 +10,6 @@ clearBasketAll () {
                Yes ) 
                   # Control will enter here if $DIRECTORY exists.
                   if [ "$(ls -A $basketLocation)" ]; then
-                     echo "$basketLocation"
                      rm -rfv "$basketLocation"/* 
                   else 
                      echo "myWasteBasket is empty, exiting operation!!!"
@@ -50,6 +49,7 @@ clearBasketMultiples () {
 
 createBasket () {
    echo "Creating myWasteBasket in desktop!!!"
+   echo "aborting initial command operation!!!"
    mkdir "$basketLocation"
 
 }
