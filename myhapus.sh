@@ -10,48 +10,45 @@ basketLocation="/home/kali/Desktop/myWasteBasket"
 #file for moving files into the basket
 
 deleteFiles() {
-   while [ $# -gt 0 ]; do
-      echo "deleting file "$1"" 
-      baseName=$(basename "$1")
-      tempName="${basketLocation}/"$baseName""
-      counter=0
+   if [ ! -d "$basketLocation" ]; then
+      createBasket
+   else
+      while [ $# -gt 0 ]; do
+         echo "deleting file "$1"" 
+         baseName=$(basename "$1")
+         tempName="${basketLocation}/"$baseName""
+         counter=0
       
-      #check if the system could find the file
-      if [ -f "$1" ] || [ -d "$1" ]; then
-         #if the name of the file is found in the myWasteBasket, increase the number of the counter by one and 
-         #add it into the filename and check again
-         while [ -f "$tempName" ] || [ -d "$tempName" ];  do
-            tempName=""${basketLocation}"/"$baseName"("$counter")"
-            let "counter++"
-         done
+         if [ -f "$1" ] || [ -d "$1" ]; then
+            while [ -f "$tempName" ] || [ -d "$tempName" ];  do
+               tempName=""${basketLocation}"/"$baseName"("$counter")"
+               let "counter++"
+            done
 
-         #after the filename is now is valid to be put into the basket,
-         #move the file to the basket, check if its a directory or single file
-         #both will need different command to be done
-         if [ -d "$1" ]; then
-            mv  -v "$1" "$tempName"
-         else
-            echo "$tempName"
-            mv "$1" "$tempName"
+            if [ -d "$1" ]; then
+               mv  -v "$1" "$tempName"
+            else
+               echo "$tempName"
+               mv "$1" "$tempName"
+            fi
+         else 
+            echo "file "$1" not found"
          fi
-      else 
-         echo "file "$1" not found"
-      fi
 
-      shift
-   done
+         shift
+      done
+   fi
 }
 
 #file for clearing the folder content
 
 clearBasketAll () {
-   
-   if [ -d "$basketLocation" ]; then
-      printf "Do you wish to clear myWasteBasket content? \n\n"
-      ls -A "$basketLocation"
-      
-      select yn in "Yes" "No"; do
-            case $yn in
+    if [ -d "$basketLocation" ]; then
+       printf "Do you wish to clear myWasteBasket content? \n\n"
+       ls -A "$basketLocation"
+       
+       select yn in "Yes" "No"; do
+          case $yn in
                Yes ) 
                   # Control will enter here if $DIRECTORY exists.
                   if [ "$(ls -A $basketLocation)" ]; then
@@ -60,8 +57,7 @@ clearBasketAll () {
                      echo "myWasteBasket is empty, exiting operation!!!"
                   fi
                break; ;;
-               
-               #abort operation
+         
                No )
                   echo "Aborting operation"
                   exit;;
@@ -73,20 +69,16 @@ clearBasketAll () {
    fi
 }
 
+
 clearBasketMultiples () {
    if [ ! -d "$basketLocation" ]; then
       createBasket
    else
-      #loop through the file names to delete them from the system permanently
       while [ $# -gt 0 ]; do
-
          echo "Removing the File: "$1""
          baseName=$(basename "$1")
-         #since the file is in the basket, we'll just use back its location
          location="${basketLocation}/"$baseName""
-
-         if [ -d "$location" ]; then
-            #ask for confirmation about their action        
+         if [ -d "$location" ]; then            
             printf "\nAre you sure you want to delete the directory?\n"
             rm -rf -I "$location"
          else
@@ -99,14 +91,12 @@ clearBasketMultiples () {
 }
 
 createBasket () {
-   #if the user used this program for the first time
    echo "Creating myWasteBasket in desktop!!!"
    echo "aborting initial command operation!!!"
-   mkdir "$basketLocation"
+   mkdir "${basketLocation}"
 
 }
 
-#do operation base on the flag user provided
 if [ $# -gt 0  ]; then   
    command="$1"
    shift  #so that we can use the other arguments as file (assumes)
@@ -147,7 +137,6 @@ if [ $# -gt 0  ]; then
    fi
 
 else
-   #when there's no arguments provided
    printf "Error, at least 1 (one) arguments are needed!!!\n"
    printf "Available Commands are :\n\n"
    echo "-i , delete certain file(s)"
@@ -156,4 +145,5 @@ else
    echo 
    exit 127
 fi
+
 
