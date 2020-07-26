@@ -9,6 +9,8 @@ A simple shell script that is similar to the rm command in unix, but with some t
  
 #### note that you'll need to change the location of your desktop directory in the first variable of the file for the program to work.
 
+### Also, you'll need to change the file permission using chmod +x kind_deleter.sh
+
 ## Contact
 If you have any question or suggestion regarding the project, feel free to contact me.
 ### [leonlit](https://github.com/Leonlit) :
