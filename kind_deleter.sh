@@ -12,7 +12,7 @@ basketLocation="/home/kali/Desktop/myWasteBasket"
 deleteFiles() {
    if [ ! -d "$basketLocation" ]; then
       createBasket
-   else
+   fi
       while [ $# -gt 0 ]; do
          echo "deleting file "$1"" 
          baseName=$(basename "$1")
@@ -37,7 +37,6 @@ deleteFiles() {
 
          shift
       done
-   fi
 }
 
 #file for clearing the folder content
