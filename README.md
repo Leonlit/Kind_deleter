@@ -12,8 +12,4 @@ A simple shell script that is similar to the rm command in unix, but with some t
 ### Also, you'll need to change the file permission using chmod +x kind_deleter.sh
 
 ## Contact
-If you have any question or suggestion regarding the project, feel free to contact me.
-### [leonlit](https://github.com/Leonlit) :
- - [twitter](https://twitter.com/leonlit)
- - [email](leonlit123@gmail.com)
-
+If you have any question or suggestion regarding the project, feel free to open an pull request.
