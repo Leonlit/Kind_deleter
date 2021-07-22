@@ -4,97 +4,11 @@
 # -c, used to clear the mywastebasket folder content (ask user for comfirmation bfr the operation)
 # -ic or -ci are used to delete individual files in myWasteBasket
 
-basketLocation="/home/kali/Desktop/myWasteBasket"
+basketLocation=$(eval echo ~$USER)"/mywastebasket"
 
+source ./basketHandler.sh
+source ./deletionHandler
 
-#file for moving files into the basket
-
-deleteFiles() {
-   if [ ! -d "$basketLocation" ]; then
-      createBasket
-   fi
-   while [ $# -gt 0 ]; do
-      echo "deleting file "$1"" 
-      baseName=$(basename "$1")
-      tempName="${basketLocation}/"$baseName""
-      counter=0
-
-      if [ -f "$1" ] || [ -d "$1" ]; then
-         while [ -f "$tempName" ] || [ -d "$tempName" ];  do
-            tempName=""${basketLocation}"/"$baseName"("$counter")"
-            let "counter++"
-         done
-
-         if [ -d "$1" ]; then
-            mv  -v "$1" "$tempName"
-         else
-            echo "$tempName"
-            mv "$1" "$tempName"
-         fi
-      else 
-         echo "file "$1" not found"
-      fi
-
-      shift
-   done
-}
-
-#file for clearing the folder content
-
-clearBasketAll () {
-    if [ -d "$basketLocation" ]; then
-       printf "Do you wish to clear myWasteBasket content? \n\n"
-       ls -A "$basketLocation"
-       
-       select yn in "Yes" "No"; do
-          case $yn in
-               Yes ) 
-                  # Control will enter here if $DIRECTORY exists.
-                  if [ "$(ls -A $basketLocation)" ]; then
-                     rm -rfv "$basketLocation"/* 
-                  else 
-                     echo "myWasteBasket is empty, exiting operation!!!"
-                  fi
-               break; ;;
-         
-               No )
-                  echo "Aborting operation"
-                  exit;;
-            esac
-         done
-      else
-         echo "myBasket directory in "$basketLocation" not found!"
-         createBasket
-   fi
-}
-
-
-clearBasketMultiples () {
-   if [ ! -d "$basketLocation" ]; then
-      createBasket
-   else
-      while [ $# -gt 0 ]; do
-         echo "Removing the File: "$1""
-         baseName=$(basename "$1")
-         location="${basketLocation}/"$baseName""
-         if [ -d "$location" ]; then            
-            printf "\nAre you sure you want to delete the directory?\n"
-            rm -rf -I "$location"
-         else
-            printf "\n"
-            rm -i "$location"
-         fi
-         shift
-      done
-   fi
-}
-
-createBasket () {
-   echo "Creating myWasteBasket in desktop!!!"
-   echo "aborting initial command operation!!!"
-   mkdir "${basketLocation}"
-
-}
 
 if [ $# -gt 0  ]; then   
    command="$1"
